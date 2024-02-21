@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,viewport-fit=cover">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <link rel="stylesheet" href="css/fa.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fap.css">
+    <script src="components/loader.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/fap.js"></script>
+    <script async
+            data-admob-interstitial-slot="ca-app-pub-1329534947598169/2276335005"
+            data-admob-rewarded-slot="ca-app-pub-1329534947598169/9963253331"
+            data-ad-frequency-hint="120s"
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1329534947598169"
+            crossorigin="anonymous"></script>
+    <script src="js/ads.js"></script>
+</head>
+<body>
+<header>
+    <div class="logo-btn-holder">
+        <div class="d-flex align-items-center">
+            <div class="menu-button">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="header_logo">
+                <img src="img/logo_white.svg" alt="Flightdemy">
+            </div>
+        </div>
+    </div>
+
+    <div class="title-holder">
+        <div class="app-title">A320 FAP Mockup</div>
+    </div>
+
+    <div class="account_box">
+        <span>Licensed to: <span id="user_name"></span> (<span id="uuid"></span>)</span>
+        <span class="logout_btn" onclick="logout()">-Click for logout-</span>
+    </div>
+</header>
+
+<div class="ad-container">
+    <div class="ad-box"></div>
+</div>
+
+<div class="welcome-container">
+    <div class="welcome-wrapper">
+        <div class="loginster-container">
+            <div class="img-loginster">
+                <img src="img/login-banner.png" alt="Login Banner">
+            </div>
+            <div class="form-loginster">
+                <h2>Welcome!</h2>
+                <form id="firststep-register">
+                    <p>To ensure you get the full benefit of our services, including access to our desktop version, we kindly request you to register with us. We guarantee the confidentiality of your personal information and assure you it will not be shared with any third parties.<p>
+                    <div class="field-container">
+                        <label for="register_name">Name</label>
+                        <input id="register_name" type="text" value="" placeholder="Let us know you">
+                    </div>
+
+                    <div class="field-container">
+                        <label for="register_email">Email</label>
+                        <input id="register_email" type="text" value="" placeholder="Let us keep in touch">
+                    </div>
+
+                    <div class="field-container">
+                        <label for="register_company">Did you work for a company?</label>
+                        <input id="register_company" type="text" value="" placeholder="Please specify your company name here">
+                    </div>
+
+                    <div class="field-container">
+                        <button id="register-btn" class="cta-button" type="submit">Register</button>
+                    </div>
+                </form>
+
+                <form id="otp-validation" style="display:none">
+
+                    <div class="back-btn" onclick="backBtn()">
+                        <span><i class="fa fa-chevron-left"></i></span>
+                    </div>
+
+                    <p>We have sent an email with a 4-digit code to the address you provided. To complete your registration, please enter this code below.</p>
+                    <p>If you don't see our email in your inbox, be sure to check your SPAM folder as it might have been redirected there.</p>
+
+                    <div class="otp-box">
+                        <input type="number" class="otp-digit" value="">
+                        <input type="number" class="otp-digit" value="" maxlength="1">
+                        <input type="number" class="otp-digit" value="" maxlength="1">
+                        <input type="number" class="otp-digit" value="" maxlength="1">
+                        <div class="loading" style="display:none">
+                            <img class="img-fluid" src="img/loading_small.svg" alt="Loading">
+                        </div>
+                    </div>
+
+                    <p class="resend-btn" style="display:none">Didn't receive the code? <span onclick="resendOTP()">Touch here to resend it.</span></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="trainer-container">
+    <div class="trainer-wrap">
+        <div class="b-container">
+            <div class="fap scaling">
+                <div id="fap-msg" class=""></div>
+
+                <div id="splash" class="splash hide">
+                    <img src="img/logo_white.svg" alt="Flightdemy"/>
+                </div>
+
+                <div id="screen-lock" class="splash hide">
+                    <h1>CLEAN FUNCTION</h1>
+                    <h5>SCREEN 30 SEC. LOCK</h5>
+                    <div style="height: 80px"></div>
+                    <h6>REMAINING TIME<br/>TO CLEAN THE<br/>TOUCHSCREEN</h6>
+                    <h4><span id="ssCLK">30</span> SEC.</h4>
+                    <div class="counting-bar">
+                        <div class="pgs"></div>
+                    </div>
+                </div>
+
+                <div class="header">
+                    <div class="row mx-2">
+                        <div class="col-2 text-left">
+                            <div id="caut-btn" class="btn">CAUT</div>
+                        </div>
+                        <div id="big-titles" class="col-8">
+                            <h1 id="cabinstatus-title" class="page-title">CABIN STATUS</h1>
+                            <h1 id="info-title" class="page-title" style="display: none">ABOUT US</h1>
+                            <h1 id="audio-title" class="page-title" style="display: none">AUDIO</h1>
+                            <h1 id="lights-title" class="page-title" style="display: none">CABIN LIGHTING</h1>
+                            <h1 id="doors-title" class="page-title" style="display: none">DOORS / SLIDES</h1>
+                            <h1 id="temp-title" class="page-title" style="display: none">CABIN TEMPERATURE</h1>
+                            <h1 id="water-title" class="page-title" style="display: none">WATER / WASTE</h1>
+                            <h1 id="smoke-title" class="page-title" style="display: none">SMOKE DETECTION</h1>
+                            <h1 id="system-title" class="page-title" style="display: none">SYSTEM INFO</h1>
+                            <h1 id="setup-title" class="page-title" style="display: none">FAP SET-UP</h1>
+                        </div>
+                        <div class="col-2 text-right">
+                            <div id="inf-btn" class="btn">INFO</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="info" style="display: none">
+
+                    <div class="wd">
+                        <h2 class="mb-0">A320 FAP Trainer</h2>
+                        <h4 class="m-0 mb-5">Version 1.6</h4>
+
+                        <p>Please note that this application is provided for <strong>PERSONAL USE ONLY</strong>. If you wish to utilize the app for any other purposes, a separate licensing agreement is required. </p>
+
+                        <p>For more information on licensing and usage, please visit our website at <br/>www.flightdemy.com/trainers/a320-fap.</p>
+
+                        <img class="logoFooter mt-5" width="190px" src="img/logo_white.svg" alt="Logo White">
+                        <a class="final_link" href="www.flightdemy.com">www.flightdemy.com</a>
+                    </div>
+                </div>
+
+                <div id="cabin_status">
+
+                    <div class="row titles">
+                        <div class="col"><h3>AUDIO</h3></div>
+                        <div class="col"><h3>LIGHTS</h3></div>
+                        <div class="col"><h3>DOORS/SLIDES</h3></div>
+                        <div class="col"><h3>TEMPERATURE</h3></div>
+                        <div class="col"><h3>WATER/WASTE</h3></div>
+                    </div>
+
+                    <div class="row pages-cabin">
+
+                        <div id="audio" class="col">
+                            <div class="cabin sp" data-btn="audio">
+                                <div style="height:100px"></div>
+                                <div class="bgm">
+                                    <p>BGM 1</p>
+                                    <span class="status">OFF</span>
+                                    <p>CHAN</p>
+                                </div>
+
+                                <div class="bgm volume">
+                                    <div id="bgmLIN" class="row vlin">
+                                        <div class="vlbd col-12"></div>
+                                        <div class="vlbd col-12"></div>
+                                        <div class="vlbd col-12"></div>
+                                        <div class="vlbd on col-12"></div>
+                                        <div class="vlbd on col-12"></div>
+                                        <div class="vlbd on col-12"></div>
+                                        <div class="vlbd on col-12"></div>
+                                        <div class="vlbd on col-12"></div>
+                                        <div class="vlbd on col-12"></div>
+                                        <div class="vlbd on col-12"></div>
+                                    </div>
+                                    <p>VOL</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="lights" class="col">
+                            <div class="cabin sp" data-btn="lights">
+                                <div class="lts">
+                                    <div id="fwd_entry" class="entry brt"></div>
+                                    <div id="sc-bz" class="sc dim1"></div>
+                                    <div id="sc-ec" class="sc dim1"></div>
+                                    <div id="aft_entry" class="entry brt"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="doors" class="col">
+                            <div class="cabin sp" data-btn="doors">
+
+                                <div class="hideable">
+                                    <div id="L1" class="dr disarmed"></div>
+                                    <div id="L1-open" class="dr openD"></div>
+
+                                    <div id="R1" class="dr disarmed"></div>
+                                    <div id="R1-open" class="dr openD"></div>
+
+                                    <div id="L2" class="dr disarmed"></div>
+                                    <div id="L2-open" class="dr openD"></div>
+
+                                    <div id="R2" class="dr disarmed"></div>
+                                    <div id="R2-open" class="dr openD"></div>
+
+                                    <div id="WL1" class="dr dr-w"></div>
+                                    <div id="WL1-open" class="dr dr-w openD"></div>
+                                    <div id="WL2" class="dr dr-w"></div>
+                                    <div id="WL2-open" class="dr dr-w openD"></div>
+                                    <div id="WR1" class="dr dr-w"></div>
+                                    <div id="WR1-open" class="dr dr-w openD"></div>
+                                    <div id="WR2" class="dr dr-w"></div>
+                                    <div id="WR2-open" class="dr dr-w openD"></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div id="temp" class="col">
+                            <div class="cabin sp" data-btn="temp">
+                                <div class="tmps text-center">
+                                    <input type="hidden" id="fwd_temp" class="tmp-val" value="22.0">
+                                    <div id="fwd" data-tmp="fwd_temp" class="tm">22.0</div>
+                                    <input type="hidden" id="aft_temp" class="tmp-val" value="24.0">
+                                    <div id="aft" data-tmp="aft_temp" class="tm">24.0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="water" class="col">
+                            <div class="cabin sp" data-btn="water">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="pages">
+
+                    <div id="setup-page" class="page-content" style="display: none">
+
+                        <div id="fap-setup-alternate">
+                            <div id="setup_default" class="btn">DEFAULT</div>
+                            <div style="width: 100px"></div>
+                            <div id="setup_save" class="btn">SAVE</div>
+
+                            <input type="hidden" id="def_brightness" value="100">
+                            <input type="hidden" id="def_loudspeaker" value="80">
+                            <input type="hidden" id="def_headphone" value="80">
+
+                            <input type="hidden" id="set_brightness" value="100">
+                            <input type="hidden" id="set_loudspeaker" value="80">
+                            <input type="hidden" id="set_headphone" value="80">
+                        </div>
+                        <div id="fap-setup" class="block">
+                            <div class="row">
+                                <div class="col-5 text-center">
+                                    <h5>DISPLAY</h5>
+                                    <div style="height: 25px"></div>
+                                    <h6>BRIGHTNESS</h6>
+                                    <div id="setup_vol_brightness" class="setup-selector">
+                                        <span id="" class="volumen_box">100%</span>
+                                        <div class="indicator d-flex">
+                                            <div class="bar">
+                                                <div class="ind" style="height: 100%"></div>
+                                            </div>
+                                            <div class="buttons">
+                                                <div class="btn btn-v setup-btn-vol" data-action="up"><i class="fas fa-4x fa-caret-up"></i></div>
+                                                <div class="btn btn-v setup-btn-vol" data-action="dw"><i class="fas fa-4x fa-caret-down"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-7 text-center">
+                                    <h5>VOLUME</h5>
+                                    <div style="height: 25px"></div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h6>LOUDSPEAKER</h6>
+                                            <div id="setup_vol_loudspeaker" class="setup-selector">
+                                                <span id="" class="volumen_box">80%</span>
+                                                <div class="indicator d-flex">
+                                                    <div class="bar">
+                                                        <div class="ind"></div>
+                                                    </div>
+                                                    <div class="buttons">
+                                                        <div class="btn btn-v setup-btn-vol" data-action="up"><i class="fas fa-4x fa-caret-up"></i></div>
+                                                        <div class="btn btn-v setup-btn-vol" data-action="dw"><i class="fas fa-4x fa-caret-down"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <h6>HEADPHONE</h6>
+                                            <div id="setup_vol_headphone" class="setup-selector">
+                                                <span id="" class="volumen_box">80%</span>
+                                                <div class="indicator d-flex">
+                                                    <div class="bar">
+                                                        <div class="ind"></div>
+                                                    </div>
+                                                    <div class="buttons">
+                                                        <div class="btn btn-v setup-btn-vol" data-action="up"><i class="fas fa-4x fa-caret-up"></i></div>
+                                                        <div class="btn btn-v setup-btn-vol" data-action="dw"><i class="fas fa-4x fa-caret-down"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="height: 100px"></div>
+                                        <div class="text-center">
+                                            <h6>TOUCHSCREEN<br/>CLICK</h6>
+                                            <div id="click_sound_btn" class="btn dln">ON<br/>OFF</div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="audio-page" class="page-content" style="display:none">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-3">
+                                <h3>BOARDING MUSIC</h3>
+                                <div id="bgm-selector" class="bgm-panel">
+                                    <div class="row pnl">
+                                        <div class="col">
+                                            <p>BGM 1</p>
+                                            <ul class="FAP_list">
+                                                <li data-music="fd" data-music-label="FD" class="chm active">Flightdemy</li>
+                                                <li data-music="jazz" data-music-label="JAZZ" class="chm">Jazz</li>
+                                                <li data-music="rock" data-music-label="ROCK" class="chm">Rock</li>
+                                                <li data-music="pop" data-music-label="POP" class="chm">Pop</li>
+                                            </ul>
+                                            <div class="sliderVELM" style="height: 160px;top: 25px;right: -12px;"><div class="full"></div></div>
+                                        </div>
+                                        <div class="col">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height: 10px"></div>
+                                <div class="bgm-panel">
+                                    <p>BGM 1</p>
+                                    <div class="row pnl">
+                                        <div class="col">
+                                            <div id="bgm-sw" class="btn dln">ON/<br>OFF</div>
+                                        </div>
+                                        <div class="col">
+                                            <div id="audio_vol_up" class="btn btn-v"><i class="fas fa-4x fa-caret-up" aria-hidden="true"></i></div>
+                                            <div id="audio_vol_dw" class="btn btn-v"><i class="fas fa-4x fa-caret-down" aria-hidden="true"></i></div>
+                                            <p>VOL</p>
+                                        </div>
+                                        <div class="col">
+                                            <div id="audio_chgbgm_up" class="btn btn-c"><i class="fas fa-4x fa-caret-up" aria-hidden="true"></i></div>
+                                            <div id="audio_chgbgm_dw" class="btn btn-c"><i class="fas fa-4x fa-caret-down" aria-hidden="true"></i></div>
+                                            <p>CHAN</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pram-box" class="col-7">
+                                <h3>PRERECORDED ANNOUNCEMENT</h3>
+                                <div id="pram_error" class="blue-card" style="display: none">
+                                    <div class="text-yellow" style="">NO PRERECORDED AUDIO AVAILABLE</div>
+                                    <div>CHECK PRAM</div>
+                                </div>
+                                <div id="pram_init" class="blue-card" style="display:none;">
+                                    <div>WAIT UNTIL INITIALIZATION</div>
+                                    <div>HAS BEEN COMPLETED</div>
+                                </div>
+                                <div id="announcements_box" class="bgm-panel mr-4">
+                                    <div class="row pnl">
+                                        <div class="col-4 px-0">
+                                            <p>ON ANNOUNCE</p>
+                                            <div id="annON" class="annBOX"></div>
+                                            <div style="height: 40px;"></div>
+                                            <p>MEMO</p>
+                                            <ul id="memoList" class="FAP_list">
+                                                <li class="chm blk"></li>
+                                                <li class="chm blk"></li>
+                                                <li class="chm blk"></li>
+                                                <li class="chm blk"></li>
+                                                <li class="chm blk"></li>
+                                                <li class="chm blk"></li>
+                                                <li class="chm blk"></li>
+                                            </ul>
+                                            <div class="sliderVELM" style="height: 270px;top: 140px;right: -15px;"><div class="full"></div></div>
+                                            <div class="text-center mt-2">
+                                                <div id="StopAnn" class="btn disabled">Stop</div>
+                                                <div id="play_next" class="btn dln disabled">Play<br>Next</div>
+                                                <div id="play_all" class="btn dln disabled">Play<br>All</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="row ml-3">
+                                                <div class="col-6 px-0 text-right">
+                                                    <div style="height: 160px;"></div>
+                                                    <div id="memo_list_up" class="btn disabled"><i class="fas fa-4x fa-caret-up" aria-hidden="true"></i></div>
+                                                    <div style="height: 35px;"></div>
+                                                    <div id="clear_all" class="btn dln disabled">Clear<br>All</div>
+                                                    <div style="height: 35px;"></div>
+                                                    <div id="memo_list_dw" class="btn disabled"><i class="fas fa-4x fa-caret-down" aria-hidden="true"></i></div>
+                                                </div>
+                                                <div class="col-6 px-0">
+                                                    <div style="height: 225px;"></div>
+                                                    <div id="add_ann" class="btn disabled"><i class="fas fa-2x fa-arrow-left" aria-hidden="true"></i></div>
+                                                    <div id="rm_ann" class="btn disabled"><i class="fas fa-2x fa-arrow-right" aria-hidden="true"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div id="ann-selector" class="col-9">
+                                                    <p>SELECT</p>
+                                                    <div style="height: 30px;"></div>
+                                                    <ul class="FAP_list">
+                                                        <li data-ann="i2ny5" class="chm parent active">● Flight 783 - Miami</li><li data-ann="BujIP72EWk34UGe.wav" class="chm chd ">
+                                                        <div class="item_container">
+                                                            <span class="ann_titlename">Welcome Announcement</span>
+                                                            <span class="ann_numberfile">001<span>
+        <span class="ann_filestatus"></span>
+        </span></span></div>
+                                                    </li><li data-ann="48MGYR9233M6hx9.wav" class="chm chd ">
+                                                        <div class="item_container">
+                                                            <span class="ann_titlename">Safety Instructions</span>
+                                                            <span class="ann_numberfile">002<span>
+        <span class="ann_filestatus"></span>
+        </span></span></div>
+                                                    </li><li data-ann="T2I2v8REQ7oUah9.wav" class="chm chd ">
+                                                        <div class="item_container">
+                                                            <span class="ann_titlename">In-Flight Services</span>
+                                                            <span class="ann_numberfile">003<span>
+        <span class="ann_filestatus"></span>
+        </span></span></div>
+                                                    </li><li data-ann="BzB5O7GRd93F1KK.wav" class="chm chd ">
+                                                        <div class="item_container">
+                                                            <span class="ann_titlename">Arrival Announcement</span>
+                                                            <span class="ann_numberfile">004<span>
+        <span class="ann_filestatus"></span>
+        </span></span></div>
+                                                    </li><li data-ann="bmY6W833vxkWm9S.wav" class="chm chd ">
+                                                        <div class="item_container">
+                                                            <span class="ann_titlename">Loyalty Program</span>
+                                                            <span class="ann_numberfile">005<span>
+        <span class="ann_filestatus"></span>
+        </span></span></div>
+                                                    </li><li data-ann="jqgmlt" class="chm parent ">● Flight 710 - Mexico</li><li data-ann="Go3k6R6iRkY2W4O.mp3" class="chm chd ">
+                                                        <div class="item_container">
+                                                            <span class="ann_titlename">Welcome</span>
+                                                            <span class="ann_numberfile">006<span>
+        <span class="ann_filestatus"></span>
+        </span></span></div>
+                                                    </li><li data-ann="gvhsJty96jFEZh3.mp3" class="chm chd ">
+                                                        <div class="item_container">
+                                                            <span class="ann_titlename">Arrival</span>
+                                                            <span class="ann_numberfile">007<span>
+        <span class="ann_filestatus"></span>
+        </span></span></div>
+                                                    </li><li data-ann="ewlit9" class="chm parent ">● Emergency</li><li data-ann="MoXHKZ6fUyy3r7h.mp3" class="chm chd ">
+                                                        <div class="item_container">
+                                                            <span class="ann_titlename">Emergency Landing</span>
+                                                            <span class="ann_numberfile">008<span>
+        <span class="ann_filestatus"></span>
+        </span></span></div>
+                                                    </li><li data-ann="bv5DWJDbXZlY1VI.mp3" class="chm chd ">
+                                                        <div class="item_container">
+                                                            <span class="ann_titlename">Fire</span>
+                                                            <span class="ann_numberfile">009<span>
+        <span class="ann_filestatus"></span>
+        </span></span></div>
+                                                    </li><li data-ann="z4EJohHzZuo0wHs.mp3" class="chm chd ">
+                                                        <div class="item_container">
+                                                            <span class="ann_titlename">Loss of Press</span>
+                                                            <span class="ann_numberfile">010<span>
+        <span class="ann_filestatus"></span>
+        </span></span></div>
+                                                    </li><li data-ann="empty34" class="chm"></li><li data-ann="empty212" class="chm"></li><li data-ann="empty886" class="chm"></li><li data-ann="empty109" class="chm"></li><li data-ann="empty777" class="chm"></li><li data-ann="empty201" class="chm"></li><li data-ann="empty550" class="chm"></li><li data-ann="empty790" class="chm"></li><li data-ann="empty475" class="chm"></li><li data-ann="empty403" class="chm"></li> </ul>
+                                                    <div class="sliderVELM" style="height: 510px;top: 60px;"><div class="full"></div></div>
+                                                </div>
+                                                <div class="col-3 tex">
+                                                    <div style="height: 100px;"></div>
+                                                    <div class="btn dln d-block mx-auto disabled">PREV.<br>PAGE</div>
+                                                    <div style="height: 4px;"></div>
+                                                    <div id="audio_folder_up" class="btn d-block mx-auto"><span class="symbol">▲</span></div>
+                                                    <div style="height: 4px;"></div>
+                                                    <div id="open_close_folder" class="btn dln d-block mx-auto">OPEN/<br>CLOSE</div>
+                                                    <div style="height: 4px;"></div>
+                                                    <div id="dct-play" class="btn dln d-block mx-auto disabled">DIRECT<br>PLAY</div>
+                                                    <div style="height: 4px;"></div>
+                                                    <div id="audio_folder_dw" class="btn d-block mx-auto"><span class="symbol">▼</span></div>
+                                                    <div style="height: 4px;"></div>
+                                                    <div class="btn dln d-block mx-auto  disabled">NEXT<br>PAGE</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="lights-page" class="page-content" style="display: none">
+                        <div class="row">
+                            <div class="col-4 ml-5 pl-3">
+                                <div style="height: 100px;"></div>
+                                <div data-sc="fwd_entry" class="lt_control">
+                                    <h4 class=" title">FWD ENTRY</h4>
+                                    <div class="controls">
+                                        <div data-int="brt" class="btn active">BRT</div>
+                                        <div data-int="dim1" class="btn">DIM 1</div>
+                                        <div data-int="dim2" class="btn">DIM 2</div>
+                                    </div>
+                                </div>
+                                <div style="height: 300px;"></div>
+                                <div data-sc="aft_entry" class="lt_control">
+                                    <h4 class="title">AFT ENTRY</h4>
+                                    <div class="controls">
+                                        <div data-int="brt" class="btn active">BRT</div>
+                                        <div data-int="dim1" class="btn">DIM 1</div>
+                                        <div data-int="dim2" class="btn">DIM 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="" style="height: 20px;"></div>
+                                <div class="main-control">
+                                    <div id="" class="main-lts btn dln active">MAIN<br>ON/OFF</div>
+                                    <div style="width: 50px;display: inline-block;"></div>
+                                    <div id="AiBtn-M" class="btn active">AISLE</div>
+                                    <div id="WdBtn-M" class="btn active">WNDW</div>
+                                </div>
+                                <div class="" style="height: 100px;"></div>
+                                <div data-sc="sc-bz" class="sec-zone lt_control">
+                                    <h4 class="title">BUSSINESS CLASS</h4>
+                                    <div class="controls">
+                                        <div data-int="brt" class="btn">BRT</div>
+                                        <div data-int="dim1" class="btn active">DIM 1</div>
+                                        <div data-int="dim2" class="btn">DIM 2</div>
+                                    </div>
+                                </div>
+                                <div style="height: 100px;"></div>
+                                <div data-sc="sc-ec" class="sec-zone lt_control">
+                                    <h4 class="title">ECONOMY CLASS</h4>
+                                    <div class="controls">
+                                        <div data-int="brt" class="btn">BRT</div>
+                                        <div data-int="dim1" class="btn active">DIM 1</div>
+                                        <div data-int="dim2"class="btn">DIM 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="" style="height: 20px;"></div>
+                                <div class="reading-control">
+                                    <div class="pBtn btn dln">R/L<br/>SET</div>
+                                    <div class="pBtn btn dln">R/L RESET</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="doors-page" class="page-content" style="display: none">
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col text-right">
+                                <div style="height: 120px;"></div>
+                                <div id="L1_Slide" class="title">
+                                    <h5>SLIDE DISARMED</h5>
+                                </div>
+                                <div style="height: 160px;"></div>
+                                <div class="row">
+                                    <div class="col text-right">
+                                        <h2 class="door_label" style="margin-right:-70px">EMER EXIT</h2>
+                                        <h2 class="door_label" style="margin-right:-55px">FWD L</h2>
+                                        <h2 class="door_label" style="margin-right:-50px">AFT L</h2>
+                                    </div>
+                                </div>
+                                <div style="height: 200px;"></div>
+                                <div id="L2_Slide"class="title">
+                                    <h5>SLIDE DISARMED</h5>
+                                </div>
+
+                            </div>
+                            <div class="col">
+                                <div style="height: 120px;"></div>
+                                <div class="row">
+                                    <div class="col text-left pl-4">
+                                        <h2 class="door_label">1L</h2>
+                                    </div>
+                                    <div class="col text-right pr-4">
+                                        <h2 class="door_label">1R</h2>
+                                    </div>
+                                </div>
+                                <div style="height: 455px;"></div>
+                                <div class="row">
+                                    <div class="col text-left pl-4">
+                                        <h2 class="door_label">4L</h2>
+                                    </div>
+                                    <div class="col text-right pr-4">
+                                        <h2 class="door_label">4R</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col text-left">
+                                <div style="height: 120px;"></div>
+                                <div id="R1_Slide" class="title">
+                                    <h5>SLIDE DISARMED</h5>
+                                </div>
+                                <div style="height: 160px;"></div>
+                                <div class="row">
+                                    <div class="col text-left">
+                                        <div class="col text-left">
+                                            <h2 class="door_label" style="margin-left:-85px">EMER EXIT</h2>
+                                            <h2 class="door_label" style="margin-left:-65px">FWD R</h2>
+                                            <h2 class="door_label" style="margin-left:-62px">AFT R</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height: 200px;"></div>
+                                <div id="R2_Slide"class="title">
+                                    <h5>SLIDE DISARMED</h5>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div style="height: 550px;"></div>
+                                <div class="zone px-2" style="width:180px;left:0">
+                                    <h4>LEGEND</h4>
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <div class="dleg dleg-closed"></div>
+                                        </div>
+                                        <div class="text-left col"><span>DOOR CLOSED & ARMED</span></div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-1">
+                                            <div class="dleg dleg-open"></div>
+                                        </div>
+                                        <div class="text-left col"><span>DOOR OPEN</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="temp-page" class="page-content" style="display: none">
+                        <div class="row">
+                            <div class="col-6 text-right">
+                                <div class="tmp-controller">
+                                    <div id="fwd_zone" class="zone area-control">
+                                        <h3>FWD AREA</h3>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="thermo">
+                                        <span class="thermometer">
+                                            <div class="marks">
+                                                <div>&deg;C</div>
+                                                <div class="n">30</div>
+                                                <div class="n">28</div>
+                                                <div class="n">26</div>
+                                                <div class="n">24</div>
+                                                <div class="n">22</div>
+                                                <div class="n">20</div>
+                                                <div class="n">18</div>
+                                                <div class="n">16</div>
+                                            </div>
+                                            <div class="needle_holder">
+                                                <div class="needle"></div>
+                                            </div>
+                                        </span>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div style="height:80px;"></div>
+                                                <h5>SELECTED<br>TEMPERATURE</h5>
+                                                <input type="hidden" id="fwd_zone_sel" class="tmp-val" value="23">
+                                                <div id="fwd_zone_label" class="label-tmp">23.0ºC</div>
+                                                <div class="b-t-n">
+                                                    <div class="btn" data-action="up"><span class="symbol">&#9650;</span></div>
+                                                </div>
+                                                <div class="b-t-n">
+                                                    <div class="btn" data-action="dw"><span class="symbol">&#9660;</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="aft_zone" class="zone area-control hide">
+                                        <h3>AFT AREA</h3>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="thermo">
+                                        <span class="thermometer">
+                                            <div class="marks">
+                                                <div>&deg;C</div>
+                                                <div class="n">30</div>
+                                                <div class="n">28</div>
+                                                <div class="n">26</div>
+                                                <div class="n">24</div>
+                                                <div class="n">22</div>
+                                                <div class="n">20</div>
+                                                <div class="n">18</div>
+                                                <div class="n">16</div>
+                                            </div>
+                                            <div class="needle_holder">
+                                                <div class="needle"></div>
+                                            </div>
+                                        </span>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div style="height:80px;"></div>
+                                                <h5>SELECTED<br>TEMPERATURE</h5>
+                                                <input type="hidden" id="aft_zone_sel" class="tmp-val" value="23">
+                                                <div id="aft_zone_label" class="label-tmp">23.0ºC</div>
+                                                <div class="b-t-n">
+                                                    <div class="btn" data-action="up"><span class="symbol">&#9650;</span></div>
+                                                </div>
+                                                <div class="b-t-n">
+                                                    <div class="btn" data-action="dw"><span class="symbol">&#9660;</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="zone reset">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div id="reset-tmp" class="btn">RESET</div>
+                                            </div>
+                                        </div>
+                                        <h5>RESET TO COCKPIT<br>SELECTED TEMPERATURE<br>(ALL AREAS)</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div style="height: 210px"></div>
+                                <div data-zone="fwd_zone" class="btn b-tmp mr-5">FWD</div>
+                            </div>
+                            <div class="col text-left">
+                                <div style="height: 470px"></div>
+                                <div data-zone="aft_zone" class="btn b-tmp">AFT</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="water-page" class="page-content" style="display: none">
+                        <div style="height: 30px;"></div>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col">
+                                <h3>WASTE QUANTITY</h3>
+                                <div class="waste-tank tank">
+                                    <div class="level"  style="height: 10%;"></div>
+                                    <div class="marks">
+                                        <div>%</div>
+                                        <div class="n">100</div>
+                                        <div class="n"></div>
+                                        <div class="n">75</div>
+                                        <div class="n"></div>
+                                        <div class="n">50</div>
+                                        <div class="n"></div>
+                                        <div class="n">25</div>
+                                        <div class="n"></div>
+                                        <div class="n">10</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h3>WATER QUANTITY</h3>
+                                <div class="water-tank tank">
+                                    <div class="level" style="height: 80%;"></div>
+                                    <div class="marks">
+                                        <div>%</div>
+                                        <div class="n">100</div>
+                                        <div class="n"></div>
+                                        <div class="n">75</div>
+                                        <div class="n"></div>
+                                        <div class="n">50</div>
+                                        <div class="n"></div>
+                                        <div class="n">25</div>
+                                        <div class="n"></div>
+                                        <div class="n">10</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div style="height: 100px;"></div>
+                                <div id="WWRst" class="btn dln">Reset<br/>Warn</div>
+                            </div>
+                            <div class="col" style="height: 30px;"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9 ml-5 ">
+                                <div id="msgr-block" style="" class="block pl-4 mt-5 text-left">
+                                    <h5>MESSAGE</h5>
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <div class="msg-section"></div>
+                                        </div>
+                                        <div class="">
+                                            <div style="height: 100px;"></div>
+                                            <div class="col">
+                                                <div class="btn dln">Prev<br/>Pag</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="btn dln">Next<br/>Pag</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="smoke-page" class="page-content" style="display: none">
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col"></div>
+                            <div class="col">
+                                <div id="lav_a" class="lav"><div class="smoke-label">LAV A</div></div>
+                                <div id="lav_d" class="lav"><div class="smoke-label">LAV D</div></div>
+                                <div id="lav_e" class="lav"><div class="smoke-label r">LAV E</div></div>
+                            </div>
+                            <div class="col"></div>
+                            <div class="col">
+                                <div style="height: 200px"></div>
+                                <div class="smk-panel ml-auto mr-3">
+                                    <div class="smk-lt"></div>
+                                    <div class="smk-label">SMOKE<br>DETECTED</div>
+                                    <div class=" smk-reset btn dln">SMOKE<br/>RESET</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <div class="row mx-2">
+                        <div class="col-2 text-left">
+                            <div id="screen-off" class="btn dln" >Screen Off</div>
+                            <div id="cabin-ready" class="dmBtn btn dln" >Cabin<br/>Ready</div>
+                        </div>
+                        <div id="sysbtns" class="col-8">
+                            <div class="nav-bar">
+                                <div class="current-bar left"></div>
+                            </div>
+                            <div class="footer-btns">
+                                <div class="left-menu">
+                                    <div class="btn disabled"><div class="arrow-left"></div></div>
+                                    <div class="btn sp" data-btn="audio">Audio</div>
+                                    <div class="btn sp" data-btn="lights">Lights</div>
+                                    <div class="btn dln sp" data-btn="doors">Doors /<br>Slides</div>
+                                    <div class="btn sp" data-btn="temp">Temp</div>
+                                    <div class="btn dln sp" data-btn="water" >Water /<br>Waste</div>
+                                    <div class="btn dln sp" data-btn="smoke" >Smoke<br>Detect</div>
+                                    <div class="btn disabled"></div>
+                                    <div class="btn disabled"></div>
+                                    <div class="btn dln sp" data-btn="system" >System<br>Info</div>
+                                    <div class="btn sp" data-btn="r-menu"><div class="arrow-right"></div></div>
+                                </div>
+
+                                <div class="right-menu">
+                                    <div class="btn sp"  data-btn="l-menu"><div class="arrow-left"></div></div>
+                                    <div class="btn dln sp" data-btn="cabin-prog">Cabin<br>Prog</div>
+                                    <div class="btn dln sp" data-btn="layout-select">Layout<br>Select</div>
+                                    <div class="btn dln sp" data-btn="level-adjust">Level<br>Adjust</div>
+                                    <div class="btn disabled"></div>
+                                    <div class="btn disabled"></div>
+                                    <div class="btn disabled"></div>
+                                    <div class="btn disabled"></div>
+                                    <div class="btn dln sp" data-btn="sw-down">SW<br>Down</div>
+                                    <div class="btn dln sp" data-btn="setup">FAP<br>Set Up</div>
+                                    <div class="btn disabled"><div class="arrow-right"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2 text-right">
+                            <div id="cabin-status" class="btn dln">Cabin Status</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="subpanel">
+                    <div class="row">
+                        <div class="col">
+                            <div class="btn emer">
+                                <div class="emer-led"></div>
+                                <span>EMER</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div></div>
+                        </div>
+                        <div class="col">
+                            <div class="btn"></div>
+                        </div>
+                        <div class="col">
+                            <div class="main-lts btn tln green active">LIGHTS<br/>MAIN<br/>ON/OFF</div>
+                        </div>
+                        <div class="col">
+                            <div class="dmBtn btn dln green">LAV<br/>MAINT</div>
+                        </div>
+                        <div class="col">
+                            <div class="screen_lock btn tln">SCREEN<br/>30 sec.<br/>LOCK</div>
+                        </div>
+                        <div class="col">
+                            <div class="evac_cmd btn green dln">EVAC<br/>CMD</div>
+                        </div>
+                        <div class="col">
+                            <div class="evac_rst btn dln">EVAC<br/>RESET</div>
+                        </div>
+                        <div class="col">
+                            <div class="smk-reset btn dln">SMOKE<br/>RESET</div>
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                            <div></div>
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/trainer.js"></script>
+</body>
+</html>
